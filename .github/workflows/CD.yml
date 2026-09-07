@@ -5,6 +5,7 @@ on:
     workflows: ["CI – FastAPI"]
     types:
       - completed
+      
 
 jobs:
   deploy:
