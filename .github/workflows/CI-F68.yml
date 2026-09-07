@@ -34,6 +34,7 @@ jobs:
           flake8 app tests --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
   test:
     runs-on: ubuntu-24.04
+    needs: linting
     steps:
         # Runner infos
       - name: Runner infos
@@ -62,6 +63,7 @@ jobs:
           pytest --maxfail=1 --disable-warnings -q
   SafetyScan:
     runs-on: ubuntu-24.04
+    needs: [test]
     steps:
         # Runner infos
       - name: Runner infos
