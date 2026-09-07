@@ -35,4 +35,5 @@ jobs:
        # Vérifier la sécurité des dépendances (optionnel)
       - name: Check for security issues
         run: |
+          pip install safety
           safety check  || true
