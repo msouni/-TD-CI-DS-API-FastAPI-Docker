@@ -65,4 +65,4 @@ jobs:
       - name: Check for security issues
         run: |
           pip install safety
-          safety scan  || true
+          safety check -r app/requirements.txt || true
