@@ -36,10 +36,10 @@ jobs:
       #    username: ${{ secrets.SSH_USER }}
       #    key: ${{ secrets.SSH_KEY }}
       #    script: |
-      #      docker pull ${{ secrets.DOCKERHUB_USERNAME }}/fastapi-td:latest
+      #      docker pull ${{ secrets.DOCKERHUB_USERNAME }}/fastapi-td-ci_cd-f68:latest
       #      docker stop fastapi || true
       #      docker rm fastapi || true
-      #      docker run -d -p 8000:8000 --name fastapi ${{ secrets.DOCKERHUB_USERNAME }}/fastapi-td:latest
+      #      docker run -d -p 8000:8000 --name fastapi ${{ secrets.DOCKERHUB_USERNAME }}/fastapi-td-ci_cd-f68:latest
       #- name: Vérification post-déploiement (smoke test)
       #  run: |
       #   echo "Attente du démarrage de l'application..."
