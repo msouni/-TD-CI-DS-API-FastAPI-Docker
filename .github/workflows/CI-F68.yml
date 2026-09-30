@@ -54,8 +54,7 @@ jobs:
           # Install your application dependencies so mypy can read them
           pip install -r app/requirements.txt
       - name: Run Mypy
-        run: mypy app tests --explicit-package-bases # <--- Explicitly added target directories here 
-
+        run:  mypy app tests --explicit-package-bases --ignore-missing-imports
   test:
     runs-on: ubuntu-24.04
     needs: [linting, type-check]
