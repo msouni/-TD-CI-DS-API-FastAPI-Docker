@@ -2,9 +2,9 @@ name: CI – FastAPI
  
 on:
   pull_request:
-    branches: [main]
+    branches: [main, dev]
   push:
-    branches: [dev]
+    branches: [FT*]
  
 permissions:
   contents: read
@@ -32,9 +32,21 @@ jobs:
           pip install flake8
           flake8 app tests --count --select=E9,F63,F7,F82 --show-source --statistics
           flake8 app tests --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
-  test:
+  type-check:
     runs-on: ubuntu-24.04
     needs: linting
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install Mypy & FastAPI types
+        run: pip install mypy types-requests  # Add any other types needed
+      - name: Run Mypy
+        run: mypy app
+  test:
+    runs-on: ubuntu-24.04
+    needs: [linting, type-check]
     steps:
         # Runner infos
       - name: Runner infos
@@ -63,7 +75,7 @@ jobs:
           pytest --maxfail=1 --disable-warnings -q
   SafetyScan:
     runs-on: ubuntu-24.04
-    needs: [test]
+    needs: [test, type-check ]
     steps:
         # Runner infos
       - name: Runner infos
