@@ -2,9 +2,9 @@ name: CI – FastAPI
  
 on:
   pull_request:
-    branches: [main]
+    branches: [main, dev]
   push:
-    branches: [dev]
+    branches: [FT*]
  
 permissions:
   contents: read
@@ -79,7 +79,7 @@ jobs:
         with:
           python-version: "3.10"        
        # Vérifier la sécurité des dépendances (optionnel)
-      - name: Check for security issues
+      - name: scan for security issues
         run: |
           pip install safety
           safety check -r app/requirements.txt || true
