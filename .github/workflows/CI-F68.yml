@@ -33,15 +33,29 @@ jobs:
           flake8 app tests --count --select=E9,F63,F7,F82 --show-source --statistics
           flake8 app tests --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
   type-check:
-    runs-on: ubuntu-24.04
-    needs: linting
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      runs-on: ubuntu-24.04
+      steps:
+      - name: Runner infos
+        run: |
+          echo "Runner name : $RUNNER_NAME"
+          echo "Runner OS   : $RUNNER_OS"
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+          uses: actions/setup-python@v5
         with:
           python-version: "3.10"
-      - name: Install Mypy & FastAPI types
-        run: pip install mypy types-requests  # Add any other types needed
+          cache: 'pip'
+
+      - name: Install dependencies & Mypy
+        run: |
+          python -m pip install --upgrade pip
+          pip install mypy types-requests
+          # Install your application dependencies so mypy can read them
+          pip install -r app/requirements.txt
+
       - name: Run Mypy
         run: mypy app
   test:
@@ -73,32 +87,7 @@ jobs:
         run: |
           export PYTHONPATH=$(pwd)
           pytest --maxfail=1 --disable-warnings -q
-    type-check:
-      runs-on: ubuntu-24.04
-      steps:
-      - name: Runner infos
-        run: |
-          echo "Runner name : $RUNNER_NAME"
-          echo "Runner OS   : $RUNNER_OS"
-
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.10"
-          cache: 'pip'
-
-      - name: Install dependencies & Mypy
-        run: |
-          python -m pip install --upgrade pip
-          pip install mypy types-requests
-          # Install your application dependencies so mypy can read them
-          pip install -r app/requirements.txt
-
-      - name: Run Mypy
-        run: mypy app        
+    
   SafetyScan:
     runs-on: ubuntu-24.04
     needs: [test, type-check  ]
