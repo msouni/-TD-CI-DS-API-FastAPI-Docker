@@ -57,7 +57,7 @@ jobs:
           pip install -r app/requirements.txt
 
       - name: Run Mypy
-        run: mypy app
+        run: mypy --explicit-package-bases 
   test:
     runs-on: ubuntu-24.04
     needs: [linting, type-check]
