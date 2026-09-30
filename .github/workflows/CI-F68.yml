@@ -79,7 +79,7 @@ jobs:
         with:
           python-version: "3.10"        
        # Vérifier la sécurité des dépendances (optionnel)
-      - name: Check for security issues
+      - name: scan for security issues
         run: |
           pip install safety
           safety check -r app/requirements.txt || true
